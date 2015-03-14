@@ -1,0 +1,10 @@
+{
+	"name": "Matcher",
+	"verson": "0.1.0",
+	"description": "A module for comparing a stream of characters against a list of possible matches",
+	"author": "Trevor Behlman <me@tbehlman.com>",
+	"devDependencies": {
+		"benchmark": ">=1.0.0",
+		"nodeunit": ">=0.9.0"
+	}
+}
