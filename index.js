@@ -35,21 +35,21 @@ Matcher.prototype.matchCharCode = function( charCode ) {
 		
 		if( this.charIndex >= this.matches[ pivot ].length ) {
 			min = pivot + 1;
+			continue;
+		}
+		
+		currentChar = this.matches[ pivot ][ this.charIndex ];
+		
+		if( currentChar < charCode ) {
+			min = pivot + 1;
+		}
+		else if( currentChar > charCode ) {
+			max = pivot;
 		}
 		else {
-			currentChar = this.matches[ pivot ][ this.charIndex ];
-			
-			if( currentChar < charCode ) {
-				min = pivot + 1;
-			}
-			else if( currentChar > charCode ) {
-				max = pivot;
-			}
-			else {
-				min = this.leftIndexOf( charCode, min, pivot );
-				max = this.rightIndexOf( charCode, pivot, max );
-				break;
-			}
+			min = this.leftIndexOf( charCode, min, pivot );
+			max = this.rightIndexOf( charCode, pivot, max );
+			break;
 		}
 	}
 	
@@ -136,14 +136,16 @@ Matcher.prototype.getMatch = function() {
 };
 
 Matcher.prototype.getMatchIndex = function() {
-	for( let stringIndex = this.head; stringIndex < this.tail; stringIndex++ ) {
+	let stringIndex;
+	
+	for( stringIndex = this.head; stringIndex < this.tail; stringIndex++ ) {
 		if( this.matches[ stringIndex ].length !== this.charIndex ) {
 			this.tail = stringIndex;
 			break;
 		}
 	}
 	
-	if( this.tail - this.head !== 1 ) {
+	if( this.tail - this.head !== ( 1 >>> 0 ) ) {
 		return -1;
 	}
 	else {
