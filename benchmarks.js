@@ -1,10 +1,10 @@
 "use strict";
 
 const Suite = require( 'benchmark' ).Suite;
+const v8 = require( 'v8-natives' );
 
 const Matcher = require( './index' );
 //const ASMMatcher = require( './msweet' );
-
 
 function randCharCode() {
 	return 97 + Math.random() * 26 >>> 0;
@@ -71,3 +71,27 @@ suite
 } )
 
 .run( { 'async': false } );
+
+function printStatus( fn, that, args, name, str1, str2 ) {
+	str1 = str1 === undefined ? "is" : str1;
+	str2 = str2 === undefined ? "" : str2;
+	switch( v8.getOptimizationStatus( fn ) ) {
+		case 1:
+			console.log( name + " " + str1 + " " + str2 + "optimized" );
+			break;
+		case 2:
+			console.log( name + " " + str1 + " not " + str2 + "optimized" );
+			//if( that !== null ) {
+				v8.optimizeFunctionOnNextCall( fn );
+				fn.apply( that, args );
+				printStatus( fn, that, args, name, "can", "be " );
+			//}
+			break;
+	}
+}
+
+var matcher = new Matcher( ["test"] );
+printStatus( Matcher, matcher, [["test"]], "Matcher" );
+printStatus( Matcher.prototype.matchCharCode, matcher, [116], "matchCharCode" );
+printStatus( Matcher.prototype.matchBuffer, matcher, [new Buffer("est")], "matchBuffer" );
+printStatus( Matcher.prototype.getMatchIndex, matcher, [], "getMatchIndex" );

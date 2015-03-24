@@ -5,6 +5,7 @@
 	"author": "Trevor Behlman <me@tbehlman.com>",
 	"devDependencies": {
 		"benchmark": ">=1.0.0",
-		"nodeunit": ">=0.9.0"
+		"nodeunit": ">=0.9.0",
+		"v8-natives": ">=0.0.1"
 	}
 }

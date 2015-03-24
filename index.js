@@ -2,7 +2,8 @@
 
 function Matcher( matches, isBufferEncoded ) {
 	if( !isBufferEncoded ) {
-		for( let i = 0; i < matches.length; i++ ) {
+		let i;
+		for( i = 0; i < matches.length; i++ ) {
 			matches[i] = new Buffer( matches[i] );
 		}
 	}
@@ -145,12 +146,7 @@ Matcher.prototype.getMatchIndex = function() {
 		}
 	}
 	
-	if( this.tail - this.head !== ( 1 >>> 0 ) ) {
-		return -1;
-	}
-	else {
-		return this.head;
-	}
+	return this.tail - this.head === 1 ? this.head : -1;
 };
 
 module.exports = Matcher;
